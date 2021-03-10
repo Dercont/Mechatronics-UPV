@@ -1,0 +1,9 @@
+function out = SplineCubicaNatural3Puntos(Puntos,incremento_real,tiempo_real)
+% Función que calcula una trayectoria Curva Spline 3 puntos
+% Puntos = [P0x P0y;P1x P1y;P2x P2y];
+% Incremento Real = Tiempo de muestreo
+% Tiempo Real = tiempo total de la trayectoria.
+
+%Calculo del parámetro de avance de la curva:
+I nc = Incremento real / Tiempo Real
+end
