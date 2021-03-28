@@ -12,7 +12,6 @@
     [m1, b1] = PunExtremos(X, Y);
     y_ext = m1 * X + b1;
     plot(X, y_ext)
-
     %Se hace el cálculo de la recta de Mínimos Cuadrados
     [m2, b2] = MinCuadrados(X.', Y.');
     y_min = m2 * X + b2;
