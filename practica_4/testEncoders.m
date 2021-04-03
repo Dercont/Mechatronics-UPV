@@ -73,7 +73,6 @@ Wait(1000);
 ClearScreen();
 
 plot(tiempo_v, giroA_v);
+xlabel Tiempo(seg)
+ylabel ('Velocidad radianes/seg')
 grid on;
-
-
-
