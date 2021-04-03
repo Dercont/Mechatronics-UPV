@@ -1,14 +1,13 @@
 global giroA_v;
-global giroB_v;
+global giroC_v;
 global tiempo_v;
 
 %Inicialización de variables
 
 giroA_v = 0;
-giroB_v = 0;
+giroC_v = 0;
 tiempo_v = 0;
-tiempo = 0; 
-Ts = 0.05; %50ms
+tiempo = 0; Ts = 0.05; %50ms
 
 TextOut(0,LCD_LINE1,'test Encoders'); % Mostramos por pantalla el tipo de test
 TextOut(0,LCD_LINE2,'Presione el boton central para');
@@ -26,8 +25,8 @@ giro = MotorRotationCount(OUT_A); % grados
 OnFwd(OUT_A, velocidad); % Giro motor A
 
 giroA_v = giro;
-while (giro < 1000)
-    t1 = double(CurrentTick()); % Hasta giro 1000 grados
+while (giro < 1080) % Hasta giro 1080 grados
+    t1 = double(CurrentTick());
     tiempo_v = [tiempo_v tiempo];
     giro = MotorRotationCount(OUT_A); 
     NumOut(0, LCD_LINE2, giro);
@@ -56,9 +55,11 @@ ResetRotationCount(OUT_C); %Reset encoder
 giro = MotorRotationCount(OUT_C); % grados
 OnFwd(OUT_C, velocidad); % Giro motor C
 
-while (giro < 1000) 
+while (giro < 1080) 
+
     NumOut(0, LCD_LINE2, giro);
     giro = MotorRotationCount(OUT_C);
+
 end
 
 NumOut(0, LCD_LINE2, giro);
@@ -71,6 +72,8 @@ NumOut(0, LCD_LINE3, giro);
 Wait(1000);
 ClearScreen();
 
+plot(tiempo_v, giroA_v);
+grid on;
 
 
 
