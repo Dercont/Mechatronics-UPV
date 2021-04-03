@@ -74,5 +74,5 @@ ClearScreen();
 
 plot(tiempo_v, giroA_v);
 xlabel Tiempo(seg)
-ylabel ('Velocidad radianes/seg')
+ylabel ('Giro grados/seg')
 grid on;
