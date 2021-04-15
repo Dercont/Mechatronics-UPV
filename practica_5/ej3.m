@@ -6,10 +6,10 @@ global uk_1 ek_1;
 ek = Referencia - VC ;
 % Calcular la Acción de control COMPLETAR
 up = Kp * ek;
-ui = uk_1 + (kp/Ti) * ek * Ts;
-ud = Kp * Td ((ek - ek_1) / Ts);
+ui = uk_1 + (Kp/Ti) * ek * Ts;
+ud = Kp * Td * ((ek - ek_1) / Ts);
 
-uk =  up + ui + ud;
+uk = up + ui + ud;
 
 %Saturar la Acción de Control (-100,+100) COMPLETAR
 if (uk >= (100))
