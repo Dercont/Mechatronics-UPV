@@ -5,19 +5,19 @@ global uk_1 ek_1;
 % Calcular el Error COMPLETAR
 ek = Referencia - VC ;
 % Calcular la Acción de control COMPLETAR
-up = Kp*ek;
-ui = Kp/Ti *ek ;
-ud = Kp*Td  ;
+up = Kp * ek;
+ui = uk_1 + (kp/Ti) * ek * Ts;
+ud = Kp * Td ((ek - ek_1) / Ts);
 
 uk =  up + ui + ud;
 
 %Saturar la Acción de Control (-100,+100) COMPLETAR
 if (uk >= (100))
-    uk = uk ;%falta
+    uk = 100;
     ui = uk_1;
 end     
 if (uk <= (-100))
-    uk = uk;%falta
+    uk = -100;
     ui = uk_1;
 end
 
