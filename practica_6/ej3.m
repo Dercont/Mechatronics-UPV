@@ -1,6 +1,8 @@
 function [dot_xc, dot_yc] = controlador_pv( Trayectoria,theta,x,y)
-    global uk_1 ek_1;
     %TEST
+    % x= x_init;
+    % y = y_init;
+    % theta = theta_init;
     % Kx = 5;
     % Ky = 5;
     % e = 100;
@@ -14,10 +16,10 @@ function [dot_xc, dot_yc] = controlador_pv( Trayectoria,theta,x,y)
     %Calculo de las matrices
     deriv = [];
 
-    for i = 1:size(Trayectoria) 
+    for i = 1:size(Trayectoria,1) 
         ma1 = [Trayectoria(i,4);Trayectoria(i,5)];
-        ma2 = [kx,0;0,ky];
-        ma3 = [(Trayectoria(i,2) - (x + e * cos(theta)) ; (Trayectoria(i,3) - (y + e * sin(theta))) )];
+        ma2 = [Kx,0;0,Ky];
+        ma3 = [(Trayectoria(i,2) - (x + e * cos(theta))) ; (Trayectoria(i,3) - (y + e * sin(theta)))];
         
         %Generación de las derivadas de la posición del punto descentralizado
         temp = ma1 + ma2 * ma3;
