@@ -13,10 +13,10 @@ function [dot_xc, dot_yc] = controlador_pv( Trayectoria,theta,x,y)
     % dot_xref = Trayectoria(:,4);
     % dot_yref = Trayectoria(:,5);
 
-    %Calculo de las matrices
     deriv = [];
 
     for i = 1:size(Trayectoria,1) 
+        %Calculo de las matrices
         ma1 = [Trayectoria(i,4);Trayectoria(i,5)];
         ma2 = [Kx,0;0,Ky];
         ma3 = [(Trayectoria(i,2) - (x + e * cos(theta))) ; (Trayectoria(i,3) - (y + e * sin(theta)))];
