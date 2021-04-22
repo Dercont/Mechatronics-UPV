@@ -89,8 +89,8 @@ for i=0:niteraciones
     posruedaIzquierda = double(MotorRotationCount(OUT_A));
     
     % calculamos las velocidades angulares (rad/s) de las ruedas // CONVERTIR A RADIANES
-    wdk= ((posruedaDerecha-posruedaDerecha1)*pi/180)/Ts;
-    wik= ((posruedaIzquierda-posruedaIzquierda1)*pi/180)/Ts;
+    wdk= ((posruedaDerecha-posruedaDerecha1)* pi/180) /Ts;
+    wik= ((posruedaIzquierda-posruedaIzquierda1) * pi/180) /Ts;
     
     % calculamos las velocidades lineales (mm/s) de las ruedas: v = w*radio
     vdk= wdk * radiorueda; 
@@ -108,7 +108,7 @@ for i=0:niteraciones
     theta= theta + wk * Ts;
     
     % calculamos la velocidad del punto descentralizado a partir del control cinematico del robot (mm/s) %pag 18
-    velxp= velxref + ky * (xref-(x+e*cos(theta)));
+    velxp= velxref + kx * (xref-(x+e*cos(theta)));
     velyp= velyref + ky * (yref-(y+e*sin(theta)));
 
     % calculamos las velocidades lineales de la ruedas que debera aplicar el robot a partir del modelo cinematico inverso del robot (mm/s) %pag17
