@@ -43,19 +43,19 @@ for i=0:niteraciones
     %---------------Trayectoria circular-------------------------------------
     % posicion y orientacion inicial: x=500.0, y=0.0, theta=pi/2;
     
-%     xref=500*cos(2*3.14159*0.04*0.05*i);
-%     yref=500*sin(2*3.14159*0.04*0.05*i);
-%     velxref=-500*2*3.14159*0.04*sin(2*3.14159*0.04*0.05*i);
-%     velyref=500*2*3.14159*0.04*cos(2*3.14159*0.04*0.05*i);
+    xref=500*cos(2*3.14159*0.04*0.05*i);
+    yref=500*sin(2*3.14159*0.04*0.05*i);
+    velxref=-500*2*3.14159*0.04*sin(2*3.14159*0.04*0.05*i);
+    velyref=500*2*3.14159*0.04*cos(2*3.14159*0.04*0.05*i);
     
     %---------------Trayectoria infinito--------------------------------------
     % posicion y orientacion inicial: x=500.0, y=0.0, theta=pi/4;
-    
-       xref=500*sin(2*3.14159*0.04*0.05*i)+500;
-       yref=250*sin(4*3.14159*0.04*0.05*i);
-       velxref=500*2*3.14159*0.04*cos(2*3.14159*0.04*0.05*i);
-       velyref=250*4*3.14159*0.04*cos(4*3.14159*0.04*0.05*i);
-    
+%     
+%        xref=500*sin(2*3.14159*0.04*0.05*i)+500;
+%        yref=250*sin(4*3.14159*0.04*0.05*i);
+%        velxref=500*2*3.14159*0.04*cos(2*3.14159*0.04*0.05*i);
+%        velyref=250*4*3.14159*0.04*cos(4*3.14159*0.04*0.05*i);
+%     
     %---------------Trayectoria cuadrada--------------------------------------
     % posicion y orientacion inicial: x=500.0, y=0.0, theta=0;
     
@@ -93,54 +93,47 @@ for i=0:niteraciones
     wik= ((posruedaIzquierda-posruedaIzquierda1)*pi/180)/Ts;
     
     % calculamos las velocidades lineales (mm/s) de las ruedas: v = w*radio
-    vdk= wdk * radiorueda;
+    vdk= wdk * radiorueda; 
     vik= wik * radiorueda;
     
     % calculamos la velocidad lineal del robot (mm/s)
-    vk= (vr + vi) / 2 ;
+    vk= (vdk + vik) / 2 ;
     
     % calculamos la velocidad angular del robot (rad/s)
-    wk= (vr - vl) / 2b;
+    wk= (vdk - vik) / 2*b;
     
     % estimamos la posicion X-Y (mm) y la orientacion del robot (rad)
     x= x + vk * cos(theta) * Ts;
-    y= y + vk * sen(theta) * Ts;
-    theta= wk * Ts + theta;
+    y= y + vk * sin(theta) * Ts;
+    theta= theta + wk * Ts;
     
     % calculamos la velocidad del punto descentralizado a partir del control cinematico del robot (mm/s) %pag 18
-    ma1 = [(vk * cos(theta));(vk * sin(theta))];
-    ma2 = [kx 0; 0 ky];
-    ma3 = [(x - (x + e * cos(theta))) ; y - (y + e * sin(theta))];
-    deriv = ma1 + ma2 * ma3;
-    
-    velxp= deriv(1);
-    velyp= deriv(2);
-    velz = [velxp; velyp];
+    velxp= velxref + ky * (xref-(x+e*cos(theta)));
+    velyp= velyref + ky * (yref-(y+e*sin(theta)));
 
     % calculamos las velocidades lineales de la ruedas que debera aplicar el robot a partir del modelo cinematico inverso del robot (mm/s) %pag17
-    lefrig = 1/2 * ((cos(theta)+(b/e)*sin(theta)) (sin(theta)-(b/e)*cos(theta)) (cos(theta)-(b/e)*sin(theta)) (sin(theta)+(b/e)*cos(theta))) * velz;
-    vi=lefrig(1);
-    vd=lefrig(2);
+    vi= (((e*cos(theta)+b*sin(theta))*velxp)+((e*sin(theta)-b*cos(theta))*velyp))*(1/e);
+    vd= (((e*cos(theta)-b*sin(theta))*velxp)+((e*sin(theta)+b*cos(theta))*velyp))*(1/e);
     
     % calculamos las velocidades angulares de referencia para el control dinamico (rad/s)
-    wref_d=;
-    wref_i=;
+    wref_d= vd/radiorueda;
+    wref_i= vi/radiorueda;
    
     % mandamos las acciones de control a aplicar a cada rueda (en % actuación)
     OnFwd(OUT_C,((100*wref_d)/18.32)); % motor derecha
     OnFwd(OUT_A,((100*wref_i)/18.32)); % motor izquierda
     
     % almacenamos los valores de los encoder para la proxima iteracion
-    posruedaDerecha1=posruedaDerecha;
-    posruedaIzquierda1=posruedaIzquierda;
+    posruedaDerecha1 = posruedaDerecha;
+    posruedaIzquierda1 = posruedaIzquierda;
    
     % iteración
     i=i+1;
     
     % calculo indice integral error cuadratico
-    ex=;
-    ey=;
-    errorcua=;
+    ex= xref - x;
+    ey= yref - y;
+    errorcua= errorcua + (ex * ex+ ey * ey);
 
     %Guardar datos
     datos=[datos;xref yref x y errorcua];
@@ -150,6 +143,5 @@ for i=0:niteraciones
     espera=(max(0,Ts*1000-(t2-t1)));
     Wait(espera);
 end
-
 
 Stop(1);
