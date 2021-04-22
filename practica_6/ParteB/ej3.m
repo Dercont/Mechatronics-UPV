@@ -89,31 +89,38 @@ for i=0:niteraciones
     posruedaIzquierda = double(MotorRotationCount(OUT_A));
     
     % calculamos las velocidades angulares (rad/s) de las ruedas // CONVERTIR A RADIANES
-    wdk= (posruedaDerecha-posruedaDerecha1)/Ts;
-    wik= (posruedaIzquierda-posruedaIzquierda1)/Ts;
+    wdk= ((posruedaDerecha-posruedaDerecha1)*pi/180)/Ts;
+    wik= ((posruedaIzquierda-posruedaIzquierda1)*pi/180)/Ts;
     
     % calculamos las velocidades lineales (mm/s) de las ruedas: v = w*radio
-    vdk= wdk*;
-    vik=;
+    vdk= wdk * radiorueda;
+    vik= wik * radiorueda;
     
     % calculamos la velocidad lineal del robot (mm/s)
-    vk=;
+    vk= (vr + vi) / 2 ;
     
     % calculamos la velocidad angular del robot (rad/s)
-    wk=;
+    wk= (vr - vl) / 2b;
     
     % estimamos la posicion X-Y (mm) y la orientacion del robot (rad)
     x= x + vk * cos(theta) * Ts;
-    y=;
-    theta=;
+    y= y + vk * sen(theta) * Ts;
+    theta= wk * Ts + theta;
     
-    % calculamos la velocidad del punto descentralizado a partir del control cinematico del robot (mm/s)
-    velxp=;
-    velyp=;
+    % calculamos la velocidad del punto descentralizado a partir del control cinematico del robot (mm/s) %pag 18
+    ma1 = [(vk * cos(theta));(vk * sin(theta))];
+    ma2 = [kx 0; 0 ky];
+    ma3 = [(x - (x + e * cos(theta))) ; y - (y + e * sin(theta))];
+    deriv = ma1 + ma2 * ma3;
     
-    % calculamos las velocidades lineales de la ruedas que debera aplicar el robot a partir del modelo cinematico inverso del robot (mm/s)
-    vi=;
-    vd=;
+    velxp= deriv(1);
+    velyp= deriv(2);
+    velz = [velxp; velyp];
+
+    % calculamos las velocidades lineales de la ruedas que debera aplicar el robot a partir del modelo cinematico inverso del robot (mm/s) %pag17
+    lefrig = 1/2 * ((cos(theta)+(b/e)*sin(theta)) (sin(theta)-(b/e)*cos(theta)) (cos(theta)-(b/e)*sin(theta)) (sin(theta)+(b/e)*cos(theta))) * velz;
+    vi=lefrig(1);
+    vd=lefrig(2);
     
     % calculamos las velocidades angulares de referencia para el control dinamico (rad/s)
     wref_d=;
