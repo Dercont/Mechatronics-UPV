@@ -2,7 +2,8 @@
 global intensity_v;
 global tiempo_v;
 %% Inicialización de variables
-grey = 39; %Valor medio de gris
+found = 0;
+gray = 25; %Valor medio de gris
 k = 0;
 b = 0.1213;
 intensity_v = 0;
@@ -39,12 +40,25 @@ while(~ButtonPressed(BTNEXIT))
     cadena = ['intensidad = ' num2str(intensity)];
     TextOut(0,LCD_LINE1,cadena);
     if tiempo > 1
-        if intensity == 12 
-            %&& intensity <= gray
+        if intensity >= gray && intensity <= gray+25 && found == 0
             % paramos los motores       
             Off(OUT_AC);
+            found = 1;
         end
+        if found == 1
+            ClearScreen();
+            TextOut(0,LCD_LINE1,'Presione el botón central');
+            while(~ButtonPressed(BTNCENTER))end % Esperamos a pulsar el boton central
+            found = 2;
+            ClearScreen();
+        end
+        if found == 2
+            OnFwd(OUT_A, 10); %rueda izquierda
+            OnFwd(OUT_C, 5); %rueda derecha
+        end
+
     end
+
 end
 
 %Seguimiento de línea
@@ -54,6 +68,8 @@ end
 
 % wki = vik/r
 % wkd = vdk/r
+% paramos los motores       
+Off(OUT_AC);
 
 % paramos la comunicación con Coppeliasim
 Stop(1);
