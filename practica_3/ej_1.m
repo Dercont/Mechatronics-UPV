@@ -1,6 +1,6 @@
     %Vectores para los ejes X, Y
-    X = [0.0 0.5 1.0 1.5 2.0 2.5 3.0 3.5 4.0 4.5 5.0 5.5 6.0];
-    Y = [12.0 9.5 7.0 5.2 4.0 3.1 2.7 2.0 1.5 1.0 0.5 0.2 0.1];
+    X = [1.0	1.0	1.0	1.0	0.5	0.5	0.5	0.5	0.5	0.5	0.0	0.0	0.0	0.0	0.0	0.0];
+    Y = [61.0	62.0	63.0	60.0	59.0	57.0	58.0	56.0	55.0	50.0	39.0	25.0	13.0	12.0	20.0	34.0];
     
     %Trazo del gráfico y rectas
     plot(X, Y, '.', 'MarkerSize', 10)
@@ -12,6 +12,7 @@
     [m1, b1] = PunExtremos(X, Y);
     y_ext = m1 * X + b1;
     plot(X, y_ext)
+
     %Se hace el cálculo de la recta de Mínimos Cuadrados
     [m2, b2] = MinCuadrados(X.', Y.');
     y_min = m2 * X + b2;
