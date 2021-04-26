@@ -1,3 +1,6 @@
+%Limpiar Variables del Workspace
+clear all
+
 disp('Ejecución del modelo de ev3 en CoppeliaSim. Cambie a la ventana del simulador');
 pause(2);
 
