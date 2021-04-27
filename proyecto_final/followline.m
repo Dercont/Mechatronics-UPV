@@ -44,7 +44,7 @@ while(~ButtonPressed(BTNEXIT))
     TextOut(0,LCD_LINE2,cadena);
     cadena2 = ['Velocidad = ' num2str(v)];
     TextOut(0,LCD_LINE3,cadena2);
-    cadena3 = ['Ganancia(k) = ' num2str(kp)];
+    cadena3 = ['Ganancia = ' num2str(kp)];
     TextOut(0,LCD_LINE4,cadena3);
     
     if tiempo > 0.06
@@ -67,14 +67,17 @@ while(~ButtonPressed(BTNEXIT))
             OnFwd(OUT_A, vl); %rueda izquierda
             OnFwd(OUT_C, vr); %rueda derecha
         end
+        
         %Velocidad Crucero
         if found == 2 && intensity >= 46 && intensity <= 65
-            v = 25;
+            v = 35;
+            kp = 5;
         end
         
         %Bajar velocidad en curvas
         if found == 2 && intensity >= 0 && intensity <= 39
-            v = 8;
+            v = 10;
+            kp = 5;
         end
 
     end
