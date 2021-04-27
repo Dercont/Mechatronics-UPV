@@ -18,6 +18,8 @@ ejecutarCodigoNXC followline
 %Representar la referencia y la estimación de la posición que hace el robot
 hold on
 plot(tiempo_v,intensity_v)
-title('Trayectoria Deseada vs Trayectoria Realizada')
+title('Comportamiento Siguelíneas')
+ylabel('Intensidad')
+xlabel('Tiempo')
 hold off
 grid on;
