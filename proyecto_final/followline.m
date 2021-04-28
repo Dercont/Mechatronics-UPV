@@ -34,6 +34,7 @@ while(~ButtonPressed(BTNEXIT))
     
     % Leemos el sensor  
     intensity = double(Sensor(IN_1));
+    
     % Incrementamos el tiempo (período de muestreo 50ms)
 	tiempo = tiempo + 0.05; 
     intensity_v = [intensity_v intensity];
@@ -48,12 +49,14 @@ while(~ButtonPressed(BTNEXIT))
     TextOut(0,LCD_LINE4,cadena3);
     
     if tiempo > 0.06
+       
         %Encuentra la línea y sale del modo alcance
         if found == 0 && intensity >= 42 && intensity <= gray 
             % paramos los motores       
             Off(OUT_AC);
             found = 1;
         end
+        
         %Aguarda Instrucciones
         if found == 1
             TextOut(0,LCD_LINE1,'Presione el boton central');
@@ -61,6 +64,7 @@ while(~ButtonPressed(BTNEXIT))
             found = 2;
             ClearScreen();
         end
+        
         %Inicia el modo de seguimiento
         if found == 2
             [vl, vr] = controlerLine(gray, intensity, kp,b,v);
@@ -68,33 +72,25 @@ while(~ButtonPressed(BTNEXIT))
             OnFwd(OUT_C, vr); %rueda derecha
         end
         
-        
-        
         %Velocidad Crucero
         if found == 2 && intensity >= 30 && intensity <= 55
             %Aggressive Mode
             v = 50;
             kp = 5;
-            %Moderate Mode
-%             v = 40;
         end
         
         %Bajar velocidad en curvas
         if found == 2 && intensity >= 0 && intensity <= 23
-            v = 1;
+            v = 3;
             kp = 6;
         end
         if found == 2 && intensity >= 24 && intensity <= 29
             v = 16;
             kp = 5;
-            %Moderate Mode
-%             v = 12;
         end
         if found == 2 && intensity >= 56 && intensity <= 100
             v = 15;
             kp = 6;
-            %Moderate Mode
-%             v = 12;
         end
           
     end
