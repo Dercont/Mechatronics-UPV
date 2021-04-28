@@ -3,7 +3,7 @@ global intensity_v;
 global tiempo_v;
 %% Inicialización de variables
 found = 0;
-gray = 45;
+gray = 47;
 kp = 5;
 b = 0.1213;
 intensity_v = 0;
@@ -15,7 +15,7 @@ tiempo = 0;
 SetSensorLight(IN_1);
 
 % Definimos la velocidad de avance nominal
-v = 3;
+v = 6;
 
 %% Esperar al botón central de robot para empezar
 TextOut(0,LCD_LINE1,'Seguimiento trayectoria'); % Mostramos por pantalla el tipo de test
@@ -49,7 +49,7 @@ while(~ButtonPressed(BTNEXIT))
     
     if tiempo > 0.06
         %Encuentra la línea y sale del modo alcance
-        if found == 0 && intensity >= 39 && intensity <= gray 
+        if found == 0 && intensity >= 42 && intensity <= gray 
             % paramos los motores       
             Off(OUT_AC);
             found = 1;
@@ -68,18 +68,35 @@ while(~ButtonPressed(BTNEXIT))
             OnFwd(OUT_C, vr); %rueda derecha
         end
         
+        
+        
         %Velocidad Crucero
-        if found == 2 && intensity >= 46 && intensity <= 65
-            v = 35;
+        if found == 2 && intensity >= 30 && intensity <= 55
+            %Aggressive Mode
+            v = 50;
             kp = 5;
+            %Moderate Mode
+%             v = 40;
         end
         
         %Bajar velocidad en curvas
-        if found == 2 && intensity >= 0 && intensity <= 39
-            v = 10;
-            kp = 5;
+        if found == 2 && intensity >= 0 && intensity <= 23
+            v = 1;
+            kp = 6;
         end
-
+        if found == 2 && intensity >= 24 && intensity <= 29
+            v = 16;
+            kp = 5;
+            %Moderate Mode
+%             v = 12;
+        end
+        if found == 2 && intensity >= 56 && intensity <= 100
+            v = 15;
+            kp = 6;
+            %Moderate Mode
+%             v = 12;
+        end
+          
     end
 
 end
