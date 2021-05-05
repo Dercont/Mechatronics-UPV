@@ -15,7 +15,8 @@ tiempo = 0;
 SetSensorLight(IN_1);
 
 % Definimos la velocidad de avance nominal
-v = 6;
+v = 3;
+G = kp;
 
 %% Esperar al botón central de robot para empezar
 TextOut(0,LCD_LINE1,'Seguimiento trayectoria'); % Mostramos por pantalla el tipo de test
@@ -48,9 +49,21 @@ while(~ButtonPressed(BTNEXIT))
     cadena3 = ['Ganancia = ' num2str(kp)];
     TextOut(0,LCD_LINE4,cadena3);
     
+    cadena4 = ['Ganancia media= ' num2str(G)];
+    TextOut(0,LCD_LINE5,cadena4);
+    
+    if(ButtonPressed(BTNRIGHT))   
+        G=G+0.1;
+        pause(0.05);
+    end
+    if(ButtonPressed(BTNLEFT))
+        G= G-0.1;
+        pause(0.05);
+    end
+    
     if tiempo > 0.06
        
-        %Encuentra la línea y salir del modo alcance
+        %Encuentra la línea y sale del modo alcance
         if found == 0 && intensity >= 42 && intensity <= gray 
             % paramos los motores       
             Off(OUT_AC);
@@ -75,8 +88,8 @@ while(~ButtonPressed(BTNEXIT))
         %Velocidad Crucero
         if found == 2 && intensity >= 30 && intensity <= 55
             %Aggressive Mode
-            v = 50;
-            kp = 5;
+            v = 20;
+            kp = G;
         end
         
         %Bajar velocidad en curvas
